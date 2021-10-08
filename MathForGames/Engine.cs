@@ -9,6 +9,7 @@ namespace MathForGames
         private static bool _shouldApplicationclose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
+        private Actor _actor;
 
         /// <summary>
         /// Called to begin the application
@@ -35,6 +36,7 @@ namespace MathForGames
         private void Start()
         {
             _scenes[_currentSceneIndex].Start();
+            _actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
         }
 
         /// <summary>

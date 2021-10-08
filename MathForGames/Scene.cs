@@ -8,6 +8,7 @@ namespace MathForGames
     {
         public Scene()
         {
+
         }
 
         public void Start()

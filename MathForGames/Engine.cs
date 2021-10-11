@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace MathForGames
 {
@@ -9,7 +10,6 @@ namespace MathForGames
         private static bool _shouldApplicationclose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
-        private Actor _actor;
 
         /// <summary>
         /// Called to begin the application
@@ -24,6 +24,7 @@ namespace MathForGames
             {
                 Update();
                 Draw();
+                Thread.Sleep(150);
             }
 
             //Calll at the end of the entire application.
@@ -35,8 +36,11 @@ namespace MathForGames
         /// </summary>
         private void Start()
         {
+            Scene scene = new Scene();
+            Actor _actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
+            scene.AddActor(_actor);
+            _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
-            _actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
         }
 
         /// <summary>
@@ -61,9 +65,9 @@ namespace MathForGames
         /// Called everytime the game loops to update visuals
         /// </summary>
         private void Draw()
-        { 
+        {
+            Console.Clear();
             _scenes[_currentSceneIndex].Draw();
-
         }
 
         /// <summary>

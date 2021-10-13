@@ -38,16 +38,7 @@ namespace MathForGames
         /// </summary>
         private void Start()
         {
-            Scene scene = new Scene();
-            Actor _actor = new Actor('G', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Actor", ConsoleColor.DarkGreen);
-            Actor _actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 }, "Actor2", ConsoleColor.Magenta);
-            Player _player = new Player('P', 5, 5, 1, "Player", ConsoleColor.Cyan);
-            scene.AddActor(_actor);
-            scene.AddActor(_actor2);
-            scene.AddActor(_player);
-            _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
-            Console.CursorVisible = false;
         }
 
         /// <summary>
@@ -57,6 +48,10 @@ namespace MathForGames
         {
             _scenes[_currentSceneIndex].Update();
 
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
         }
 
         /// <summary>
@@ -65,7 +60,6 @@ namespace MathForGames
         private void End()
         {
             _scenes[_currentSceneIndex].End();
-
         }
 
         /// <summary>
@@ -164,6 +158,11 @@ namespace MathForGames
             //set the buffer at the position index to the icon.
             _buffer[(int)position.X, (int)position.Y] = icon;
             return true;
+        }
+
+        public static void CloseApplication()
+        {
+            _shouldApplicationclose = true;
         }
     }
 }

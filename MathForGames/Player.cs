@@ -50,12 +50,14 @@ namespace MathForGames
                 Movedirection = new Vector2 { Y = 1 };
             }
 
-            Movedirection.X *= _speed;
-            Movedirection.Y *= _speed;
+            GetVelocity = Movedirection * _speed;
 
-            GetVelocity = Movedirection;
+            GetPosition += _velocity;
+        }
 
-            GetPosition = new Vector2 { X = (GetPosition.X + GetVelocity.X), Y = (GetPosition.Y + GetVelocity.Y) };
+        public override void OnCollision(Actor actor)
+        {
+            Engine.CloseApplication();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace MathForGames
         /// Calls update for every actor in the actor array
         /// Calls start for the actor if it wasn't already called
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(float deltaTime)
         {
             for (int i = 0; i < _actors.Length; i++)
             {
@@ -39,12 +39,12 @@ namespace MathForGames
                 {
                     _actors[i].Start();
                 }
-                _actors[i].Update();
+                _actors[i].Update(deltaTime);
 
                 // Check for collision
                 for (int j = 0; j < _actors.Length; j++)
                 {
-                    if (_actors[i].GetPosition == _actors[j].GetPosition)
+                    if (_actors[i].GetPosition == _actors[j].GetPosition && j != i)
                     {
                         _actors[i].OnCollision(_actors[j]);
                     }
@@ -91,7 +91,7 @@ namespace MathForGames
             }
 
             //Sets the last spot of the template array to actor
-            NewActorArray[NewActorArray.Length-1] = actor;
+            NewActorArray[NewActorArray.Length - 1] = actor;
 
             //makes _actors array match the template array
             _actors = NewActorArray;

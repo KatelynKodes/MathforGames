@@ -7,6 +7,31 @@ namespace MathLibrary
         public float X;
         public float Y;
 
+        public Vector2(float xValue, float yValue)
+        {
+            X = xValue;
+            Y = yValue;
+        }
+
+        /// <summary>
+        /// Gets the length of the vector 
+        /// </summary>
+        public float Magnitude
+        {
+            get
+            {
+                return (float)Math.Sqrt(X * X + Y * Y);
+            }
+        }
+
+        public Vector2 Normalized
+        {
+            get
+            {
+                Vector2 value = this;
+                return value.Normalize();
+            }
+        }
 
         /// <summary>
         /// Returns a Vector2 that contains x and y values that are sums of two Vector2 x and Y values
@@ -76,6 +101,19 @@ namespace MathLibrary
 
             //...returns false
             return false;
+        }
+
+        /// <summary>
+        /// Returns a vector2 containg an instance of a vector divided by the magnitude
+        /// </summary>
+        /// <returns> The result of the normalization. Returns an empty vector2 if the magnitude is zero</returns>
+        public Vector2 Normalize()
+        {
+            if (Magnitude == 0)
+            {
+                return new Vector2();
+            }
+            return this / Magnitude;
         }
     }
 }

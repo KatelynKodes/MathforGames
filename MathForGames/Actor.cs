@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames
 {
     struct Icon
     {
         public char Symbol;
-        public ConsoleColor color;
+        public Color color;
     }
 
     class Actor
@@ -20,7 +21,7 @@ namespace MathForGames
 
         public bool Started
         {
-            get { return _started;}
+            get { return _started; }
         }
 
         public Vector2 GetPosition
@@ -29,12 +30,23 @@ namespace MathForGames
             set { _position = value; }
         }
 
-        public Actor(char icon, float x, float y, string name = "Actor", ConsoleColor IconColor = ConsoleColor.White) : 
-            this(icon, new Vector2 { X = x, Y = y}, name, IconColor ){}
-
-        public Actor(char CharIcon, Vector2 Position, string name = "Actor", ConsoleColor IconColor = ConsoleColor.White)
+        public Icon GetIcon
         {
-            _icon = new Icon { Symbol = CharIcon, color = IconColor};
+            get { return _icon; }
+        }
+
+        public string GetName
+        {
+            get { return _name; }
+        }
+
+        public Actor(char icon, float x, float y, Color IconColor, string name = "Actor") :
+            this(icon, new Vector2 { X = x, Y = y }, IconColor, name)
+        { }
+
+        public Actor(char CharIcon, Vector2 Position, Color IconColor, string name = "Actor")
+        {
+            _icon = new Icon { Symbol = CharIcon, color = IconColor };
             _position = Position;
             _name = name;
         }
@@ -44,23 +56,23 @@ namespace MathForGames
             _started = true;
         }
 
-        public virtual void Update()
+        public virtual void Update(float deltaTime)
         {
+            Console.WriteLine(GetName + ": (" + GetPosition.X + "," + GetPosition.Y + ")");
         }
 
         public virtual void Draw()
         {
-            Engine.Render(_icon, _position);
+            Raylib.DrawText(_icon.Symbol.ToString(), (int)GetPosition.X, (int)GetPosition.Y, 50, _icon.color);
         }
 
         public void End()
         {
-            
+
         }
 
         public virtual void OnCollision(Actor actor)
         {
-            
         }
     }
 }

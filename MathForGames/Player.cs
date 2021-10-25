@@ -55,6 +55,16 @@ namespace MathForGames
         /// <param name="collider"> The actor the player collided with </param>
         public override void OnCollision(Actor collider)
         {
+            if (collider is Enemy)
+            {
+                Engine.CloseApplication();
+            }
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+            Collider.Draw();
         }
     }
 }

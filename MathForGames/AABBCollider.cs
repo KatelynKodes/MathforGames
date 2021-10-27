@@ -37,7 +37,7 @@ namespace MathForGames
         {
             get 
             {
-                return Owner.GetPosition.X - (_width/2);
+                return Owner.Position.X - (_width/2);
             }
         }
 
@@ -48,7 +48,7 @@ namespace MathForGames
         {
             get
             {
-                return Owner.GetPosition.X + (_width/2);
+                return Owner.Position.X + (_width/2);
             }
         }
 
@@ -59,7 +59,7 @@ namespace MathForGames
         {
             get
             {
-                return Owner.GetPosition.Y - (_height/2);
+                return Owner.Position.Y - (_height/2);
             }
         }
 
@@ -70,7 +70,7 @@ namespace MathForGames
         {
             get
             {
-                return Owner.GetPosition.Y + (_height/2);
+                return Owner.Position.Y + (_height/2);
             }
         }
 

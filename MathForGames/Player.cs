@@ -23,8 +23,8 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Player(char icon, float x, float y, float speed, Color IconColor, string name = "Actor") :
-            base(icon, x, y, IconColor, name)
+        public Player(float x, float y, float speed, Color IconColor, string name = "Actor", string path = "") :
+            base(x, y, name, path)
         {
             _speed = speed;
         }
@@ -44,7 +44,7 @@ namespace MathForGames
 
             GetVelocity = Movedirection.Normalized * _speed * deltaTime;
 
-            GetPosition += _velocity;
+            Position += _velocity;
         }
 
 

@@ -33,8 +33,8 @@ namespace MathForGames
             set { _forwardDir = value; }
         }
 
-        public Enemy (char icon, float x, float y, float speed, Color IconColor, string name, float MaxAngle, Actor Chasee) :
-            base(icon, x, y, IconColor, name)
+        public Enemy (float x, float y, float speed, string name, float MaxAngle, Actor Chasee, string path = "") :
+            base(x, y,name,path)
         {
             _maxViewingAngle = MaxAngle;
             _speed = speed;
@@ -48,7 +48,7 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             //Finds the intended direction
-            Vector2 IntendedDirection = _chasee.GetPosition - GetPosition;
+            Vector2 IntendedDirection = _chasee.Position - Position;
 
             //Normalizes the intended direction and multiplies it by speed and time
             Velocity = IntendedDirection.Normalized * Speed * deltaTime;
@@ -56,7 +56,7 @@ namespace MathForGames
             if (GetTargetInSight())
             {
                 //Adds the velocity to the position
-                GetPosition += Velocity;
+                Position += Velocity;
             }
         }
 
@@ -73,10 +73,10 @@ namespace MathForGames
         /// less than or equal to a specified distance</returns>
         public bool GetTargetInSight()
         {
-            Vector2 TargetDir = (_chasee.GetPosition - GetPosition).Normalized;
+            Vector2 TargetDir = (_chasee.Position - Position).Normalized;
             float DotProduct = Vector2.DotProduct(TargetDir, ForwardDir);
             float Angle = MathF.Acos(DotProduct);
-            float Distance = Vector2.Distance(GetPosition, _chasee.GetPosition);
+            float Distance = Vector2.Distance(Position, _chasee.Position);
             return Angle < _maxViewingAngle && Distance <= 150f;
         }
     }

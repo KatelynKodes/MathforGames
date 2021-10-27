@@ -13,6 +13,9 @@ namespace MathForGames
         private bool _started;
         private Collider _collider;
         private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 _translate = Matrix3.Identity;
+        private Matrix3 _rotation = Matrix3.Identity;
+        private Matrix3 _scale = Matrix3.Identity;
         private Sprite _sprite;
 
         public bool Started
@@ -50,7 +53,7 @@ namespace MathForGames
         public Actor(float x, float y, string name = "Actor", string path = "") :
             this(new Vector2 {X = x, Y = y}, name, path){ }
 
-        public Actor(char CharIcon, Vector2 position, Color IconColor, string name = "Actor", string path = "")
+        public Actor(Vector2 position, string name = "Actor", string path = "")
         {
             Position = position;
             _name = name;
@@ -104,10 +107,63 @@ namespace MathForGames
         {
         }
 
+        /// <summary>
+        /// Sets the scale of the actor
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void SetScale(float x, float y)
         {
-            _transform.M00 = x;
-            _transform.M11 = y;
+            _scale.M00 = x;
+            _scale.M11 = y;
+        }
+
+        /// <summary>
+        /// Scales the actor by a given amount
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Scale(float x, float y)
+        { 
+        }
+
+        /// <summary>
+        /// Sets the position of the actor
+        /// </summary>
+        /// <param name="Translationx"></param>
+        /// <param name="Translationy"></param>
+        public void SetTranslation(float Translationx, float Translationy)
+        {
+            
+        }
+
+        /// <summary>
+        /// Translates the actor by a given amount.
+        /// </summary>
+        /// <param name="translationX"></param>
+        /// <param name="translationY"></param>
+        public void Translate(float translationX, float translationY)
+        {
+            
+        }
+
+        /// <summary>
+        /// Sets the rotation of the actor
+        /// </summary>
+        /// <param name="scaleX"></param>
+        /// <param name="scaleY"></param>
+        public void SetRotation(float scaleX, float scaleY)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds a rotation to the given transforms rotation
+        /// </summary>
+        /// <param name="radians"></param>
+        public void Rotate(float radians)
+        {
+            
         }
     }
 }

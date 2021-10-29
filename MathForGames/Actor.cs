@@ -110,8 +110,8 @@ namespace MathForGames
         /// <summary>
         /// Sets the scale of the actor
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The value to scale on the x axis.</param>
+        /// <param name="y">The value to scale on the y axis.</param>
         public void SetScale(float x, float y)
         {
             _scale.M00 = x;
@@ -121,8 +121,8 @@ namespace MathForGames
         /// <summary>
         /// Scales the actor by a given amount
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">The value to scale on the x axis.</param>
+        /// <param name="y">The value to scale on the y axis.</param>
         public void Scale(float x, float y)
         { 
         }
@@ -130,18 +130,18 @@ namespace MathForGames
         /// <summary>
         /// Sets the position of the actor
         /// </summary>
-        /// <param name="Translationx"></param>
-        /// <param name="Translationy"></param>
+        /// <param name="Translationx">The new x position</param>
+        /// <param name="Translationy">The new y position</param>
         public void SetTranslation(float Translationx, float Translationy)
         {
-            
+
         }
 
         /// <summary>
         /// Translates the actor by a given amount.
         /// </summary>
-        /// <param name="translationX"></param>
-        /// <param name="translationY"></param>
+        /// <param name="translationX">The amount to move on the x</param>
+        /// <param name="translationY">The amount to move on the y</param>
         public void Translate(float translationX, float translationY)
         {
             
@@ -150,9 +150,8 @@ namespace MathForGames
         /// <summary>
         /// Sets the rotation of the actor
         /// </summary>
-        /// <param name="scaleX"></param>
-        /// <param name="scaleY"></param>
-        public void SetRotation(float scaleX, float scaleY)
+        /// <param name="radians">The angle of the new rotation in radians.</param>
+        public void SetRotation(float radians)
         {
 
         }
@@ -160,7 +159,7 @@ namespace MathForGames
         /// <summary>
         /// Adds a rotation to the given transforms rotation
         /// </summary>
-        /// <param name="radians"></param>
+        /// <param name="radians">The angle in radians to turn.</param>
         public void Rotate(float radians)
         {
             

@@ -44,7 +44,9 @@ namespace MathForGames
 
             GetVelocity = Movedirection.Normalized * _speed * deltaTime;
 
-            Position += _velocity;
+            LocalPosition += _velocity;
+
+            base.Update(deltaTime);
         }
 
 

@@ -64,6 +64,7 @@ namespace MathForGames
             CircleCollider playerCircleCollider = new CircleCollider(2, player);
             player.Collider = PlayerAABB;
             player.SetScale(50, 50);
+            player.SetTranslation(200, 200);
 
             //enemy
             Enemy actor = new Enemy(100, 5, 30f,"Actor", 20, player, "Images/enemy.png");
@@ -71,9 +72,38 @@ namespace MathForGames
             AABBCollider EnemyAABB = new AABBCollider(50, 50, actor);
             actor.Collider = EnemyCircleCollider;
             actor.SetScale(50, 50);
+            actor.Forward = new Vector2(700, 900);
 
+            //Planets
+            Actor Sun = new Actor(100, 50, "Sun", "Images/Sun.png");
+            CircleCollider SunCollider = new CircleCollider(30, Sun);
+            Sun.Collider = SunCollider;
+            Sun.SetScale(50, 50);
+
+            Actor Planet1 = new Actor(200, 120, "Planet 1", "");
+            CircleCollider Planet1Collider = new CircleCollider(20, Planet1);
+            Planet1.Collider = Planet1Collider;
+
+            Actor Planet2 = new Actor(23, 77, "Planet 2", "");
+            CircleCollider Planet2Collider = new CircleCollider(20, Planet2);
+            Planet2.Collider = Planet2Collider;
+
+            Actor Planet3 = new Actor(90, 200, "Planet 3", "");
+            CircleCollider Planet3Collider = new CircleCollider(20, Planet3);
+            Planet3.Collider = Planet3Collider;
+
+            Actor Planet4 = new Actor(40, 210, "Planet 4", "");
+            CircleCollider Planet4Collider = new CircleCollider(20, Planet4);
+            Planet4.Collider = Planet4Collider;
+
+            //Adds actors to the scene;
             scene.AddActor(player);
             scene.AddActor(actor);
+            scene.AddActor(Sun);
+            scene.AddActor(Planet1);
+            scene.AddActor(Planet2);
+            scene.AddActor(Planet3);
+            scene.AddActor(Planet4);
             _scenes = new Scene[] { scene };
 
             //Starts the current scene

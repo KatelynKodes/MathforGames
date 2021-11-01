@@ -48,7 +48,7 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             //Finds the intended direction
-            Vector2 IntendedDirection = _chasee.Position - Position;
+            Vector2 IntendedDirection = _chasee.LocalPosition - LocalPosition;
 
             //Normalizes the intended direction and multiplies it by speed and time
             Velocity = IntendedDirection.Normalized * Speed * deltaTime;
@@ -56,8 +56,10 @@ namespace MathForGames
             if (GetTargetInSight())
             {
                 //Adds the velocity to the position
-                Position += Velocity;
+                LocalPosition += Velocity;
             }
+
+            base.Update(deltaTime);
         }
 
         public override void Draw()
@@ -73,10 +75,10 @@ namespace MathForGames
         /// less than or equal to a specified distance</returns>
         public bool GetTargetInSight()
         {
-            Vector2 TargetDir = (_chasee.Position - Position).Normalized;
+            Vector2 TargetDir = (_chasee.LocalPosition - LocalPosition).Normalized;
             float DotProduct = Vector2.DotProduct(TargetDir, ForwardDir);
             float Angle = MathF.Acos(DotProduct);
-            float Distance = Vector2.Distance(Position, _chasee.Position);
+            float Distance = Vector2.Distance(LocalPosition, _chasee.LocalPosition);
             return Angle < _maxViewingAngle && Distance <= 150f;
         }
     }

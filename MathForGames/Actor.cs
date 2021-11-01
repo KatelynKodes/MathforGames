@@ -11,26 +11,64 @@ namespace MathForGames
     {
         private string _name;
         private bool _started;
+        private Sprite _sprite;
         private Collider _collider;
-        private Matrix3 _transform = Matrix3.Identity;
+
+        //transforms
+        private Matrix3 _localTransform = Matrix3.Identity;
+        private Matrix3 _globalTransform = Matrix3.Identity;
         private Matrix3 _translate = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
         private Matrix3 _scale = Matrix3.Identity;
-        private Sprite _sprite;
+
+        //Parents and children
+        private Actor[] _children = new Actor[0];
+        private Actor _parent;
 
         public bool Started
         {
             get { return _started; }
         }
 
-        public Vector2 Position
+        public Vector2 LocalPosition
         {
-            get { return new Vector2(_transform.M02, _transform.M12); }
-            set 
-            { 
-                _transform.M02 = value.X;
-                _transform.M12 = value.Y;
-            }
+            get { return new Vector2(_translate.M02, _translate.M12); }
+            set{ SetTranslation(value.X, value.Y);}
+        }
+
+        public Vector2 WorldPosition
+        {
+            get; 
+            set;
+        }
+
+        public Matrix3 LocalTransform
+        {
+            get { return LocalTransform; }
+            private set { LocalTransform = value; }
+        }
+
+        public Matrix3 GlobalTransform
+        {
+            get { return _globalTransform; }
+            private set { _globalTransform = value; }
+        }
+
+        public Actor Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
+
+        public Actor[] Children
+        {
+            get { return _children; }
+        }
+
+        public Vector2 Size
+        {
+            get { return new Vector2(_scale.M00, _scale.M11); }
+            set { SetScale(value.X, value.Y); }
         }
 
         public Sprite Sprite
@@ -50,12 +88,23 @@ namespace MathForGames
             set { _collider = value; }
         }
 
+        public Vector2 Forward
+        {
+            get { return new Vector2(_rotation.M00, _rotation.M10); }
+            set 
+            { 
+                Vector2 point = value.Normalized + LocalPosition;
+                LookAt(point);
+
+            }
+        }
+
         public Actor(float x, float y, string name = "Actor", string path = "") :
             this(new Vector2 {X = x, Y = y}, name, path){ }
 
         public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            Position = position;
+            LocalPosition = position;
             _name = name;
 
             if (path != "")
@@ -71,14 +120,14 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
-            Console.WriteLine(GetName + ": (" + Position.X + "," + Position.Y + ")");
+            _localTransform = _translate * _rotation * _scale;
         }
 
         public virtual void Draw()
         {
             if (_sprite != null)
             {
-                _sprite.Draw(_transform);
+                _sprite.Draw(_localTransform);
             }
         }
 
@@ -86,6 +135,55 @@ namespace MathForGames
         {
 
         }
+
+        public void UpdateTransforms()
+        {
+            
+        }
+
+        //Adding and removing children
+
+        /// <summary>
+        /// Adds a child to an actor
+        /// </summary>
+        /// <param name="childToAdd"> The child to add to an actor </param>
+        public void AddChild(Actor childToAdd)
+        {
+            Actor[] TempChildren = new Actor[Children.Length + 1];
+
+            for (int i = 0; i < Children.Length; i++)
+            {
+                TempChildren[i] = Children[i];
+            }
+
+            TempChildren[TempChildren.Length - 1] = childToAdd;
+
+            _children = TempChildren;
+            childToAdd.Parent = this;
+        }
+
+        /// <summary>
+        /// Removes a child from the children array
+        /// </summary>
+        /// <param name="childToRemove"></param>
+        public void RemoveChild(Actor childToRemove)
+        {
+            Actor[] TempChildren = new Actor[Children.Length - 1];
+
+            for (int i = 0; i < Children.Length; i++)
+            {
+                if (Children[i] != childToRemove)
+                {
+                    TempChildren[i] = Children[i];
+                }
+            }
+
+            _children = TempChildren;
+            childToRemove.Parent = null;
+        }
+
+
+        //Collision
 
         /// <summary>
         /// Checks if this actor collided with another actor
@@ -107,6 +205,9 @@ namespace MathForGames
         {
         }
 
+
+        //Scale, Translation, and Rotation
+
         /// <summary>
         /// Sets the scale of the actor
         /// </summary>
@@ -114,8 +215,7 @@ namespace MathForGames
         /// <param name="y">The value to scale on the y axis.</param>
         public void SetScale(float x, float y)
         {
-            _scale.M00 = x;
-            _scale.M11 = y;
+            _scale = Matrix3.CreateScale(x, y);
         }
 
         /// <summary>
@@ -124,7 +224,8 @@ namespace MathForGames
         /// <param name="x">The value to scale on the x axis.</param>
         /// <param name="y">The value to scale on the y axis.</param>
         public void Scale(float x, float y)
-        { 
+        {
+            _scale *= Matrix3.CreateScale(x, y);
         }
 
         /// <summary>
@@ -134,7 +235,7 @@ namespace MathForGames
         /// <param name="Translationy">The new y position</param>
         public void SetTranslation(float Translationx, float Translationy)
         {
-
+            _translate = Matrix3.CreateTranslation(Translationx, Translationy);
         }
 
         /// <summary>
@@ -144,7 +245,7 @@ namespace MathForGames
         /// <param name="translationY">The amount to move on the y</param>
         public void Translate(float translationX, float translationY)
         {
-            
+            _translate *= Matrix3.CreateTranslation(translationX, translationY);
         }
 
         /// <summary>
@@ -153,7 +254,7 @@ namespace MathForGames
         /// <param name="radians">The angle of the new rotation in radians.</param>
         public void SetRotation(float radians)
         {
-
+            _rotation = Matrix3.CreateRotation(radians);
         }
 
         /// <summary>
@@ -162,7 +263,36 @@ namespace MathForGames
         /// <param name="radians">The angle in radians to turn.</param>
         public void Rotate(float radians)
         {
-            
+            _rotation *= Matrix3.CreateRotation(radians);
+        }
+
+
+        /// <summary>
+        /// Rotates actor to face the given position
+        /// </summary>
+        /// <param name="position"></param>
+        public void LookAt(Vector2 position)
+        {
+            //Find the direction the actor should look in
+            Vector2 Direction = (position - LocalPosition).Normalized;
+
+            //Use dotproduct to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(Direction, Forward);
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find a perpendicular vector to the distance
+            Vector2 perpDirection = new Vector2(Direction.Y, -Direction.X);
+
+            //Find the dotProduct of the perpendicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perpDirection, Forward);
+
+            //If the result isn't 0, change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
+            {
+                angle *= -perpDot / Math.Abs(perpDot);
+            }
+
+            Rotate(angle);
         }
     }
 }

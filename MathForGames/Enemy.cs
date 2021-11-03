@@ -33,8 +33,8 @@ namespace MathForGames
             set { _forwardDir = value; }
         }
 
-        public Enemy (float x, float y, float speed, string name, float MaxAngle, Actor Chasee, string path = "") :
-            base(x, y,name,path)
+        public Enemy (float x, float y, float speed, string name, float MaxAngle, Actor Chasee, Shape shape) :
+            base(x, y,name, shape)
         {
             _maxViewingAngle = MaxAngle;
             _speed = speed;

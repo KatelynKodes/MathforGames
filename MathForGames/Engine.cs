@@ -15,6 +15,8 @@ namespace MathForGames
         private static Scene[] _scenes = new Scene[0];
         private Stopwatch _stopwatch = new Stopwatch();
 
+        private Camera3D _camera = new Camera3D();
+
         /// <summary>
         /// Called to begin the application
         /// </summary>
@@ -57,63 +59,18 @@ namespace MathForGames
             //Create Window using raylib
             Raylib.InitWindow(800, 450, "MathForgames");
             Scene scene = new Scene();
+            InitializeCamera();
+
 
             //player
-            Player player = new Player(5, 10, 50f, "Player", "Images/player.png");
+            Player player = new Player(0, 0, 50f, "Player", Shape.SPHERE);
             AABBCollider PlayerAABB = new AABBCollider(50, 50, player);
             CircleCollider playerCircleCollider = new CircleCollider(2, player);
             player.Collider = PlayerAABB;
-            player.SetScale(50, 50);
-            player.SetTranslation(200, 200);
-
-            //enemy
-            Enemy actor = new Enemy(100, 5, 30f,"Actor", 20, player, "Images/enemy.png");
-            CircleCollider EnemyCircleCollider = new CircleCollider(25, actor);
-            AABBCollider EnemyAABB = new AABBCollider(50, 50, actor);
-            actor.Collider = EnemyCircleCollider;
-            actor.SetScale(50, 50);
-            actor.Forward = new Vector2(700, 900);
-
-            //Planets
-            Actor Sun = new Actor(400, 170, "Sun", "Images/Sun.png");
-            CircleCollider SunCollider = new CircleCollider(30, Sun);
-            Sun.Collider = SunCollider;
-            Sun.SetScale(100, 100);
-
-            Actor Planet1 = new Actor(400, 60, "Planet 1", "Images/Planet.png");
-            CircleCollider Planet1Collider = new CircleCollider(20, Planet1);
-            Planet1.Collider = Planet1Collider;
-            Planet1.SetScale(50, 50);
-
-            Actor Planet2 = new Actor(200, 150, "Planet 2", "Images/Planet.png");
-            CircleCollider Planet2Collider = new CircleCollider(20, Planet2);
-            Planet2.Collider = Planet2Collider;
-            Planet2.SetScale(50, 50);
-
-            Actor Planet3 = new Actor(490, 200, "Planet 3", "Images/Planet.png");
-            CircleCollider Planet3Collider = new CircleCollider(20, Planet3);
-            Planet3.Collider = Planet3Collider;
-            Planet3.SetScale(50, 50);
-
-            Actor Planet4 = new Actor(310, 250, "Planet 4", "Images/Planet.png");
-            CircleCollider Planet4Collider = new CircleCollider(20, Planet4);
-            Planet4.Collider = Planet4Collider;
-            Planet4.SetScale(50, 50);
-
-            //Adds children to sun
-            Sun.AddChild(Planet1);
-            Sun.AddChild(Planet2);
-            Sun.AddChild(Planet3);
-            Sun.AddChild(Planet4);
+            player.SetScale(1, 1, 1);
 
             //Adds actors to the scene;
             scene.AddActor(player);
-            scene.AddActor(actor);
-            scene.AddActor(Sun);
-            scene.AddActor(Planet1);
-            scene.AddActor(Planet2);
-            scene.AddActor(Planet3);
-            scene.AddActor(Planet4);
             _scenes = new Scene[] { scene };
 
             //Starts the current scene
@@ -152,11 +109,14 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
+            Raylib.BeginMode3D(_camera);
+            Raylib.DrawGrid(50, 1);
             Raylib.ClearBackground(Color.BLACK);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();
 
+            Raylib.EndMode3D();
             Raylib.EndDrawing();
         }
 
@@ -186,6 +146,17 @@ namespace MathForGames
             return _scenes.Length - 1;
         }
 
+        /// <summary>
+        /// Initializes the game camera.
+        /// </summary>
+        private void InitializeCamera()
+        {
+            _camera.position = new System.Numerics.Vector3(0,10,10); //Camera Position
+            _camera.target = new System.Numerics.Vector3(0, 0, 0); // Camera is focused on
+            _camera.up = new System.Numerics.Vector3(0,1,0); // Camera up vector
+            _camera.fovy = 45; // Camera field of view.
+            _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; //Camera mode type
+        }
 
         /// <summary>
         /// Gets the next key in the input stream

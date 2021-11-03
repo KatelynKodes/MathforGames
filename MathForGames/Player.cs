@@ -8,7 +8,7 @@ namespace MathForGames
 {
     class Player : Actor
     {
-        private Vector2 _velocity;
+        private Vector3 _velocity;
         private float _speed;
 
         public float GetSpeed
@@ -17,14 +17,14 @@ namespace MathForGames
             set { _speed = value; }
         }
 
-        public Vector2 GetVelocity
+        public Vector3 Velocity
         {
             get { return _velocity; }
             set { _velocity = value; }
         }
 
-        public Player(float x, float y, float speed, string name = "Actor", string path = "") :
-            base(x, y, name, path)
+        public Player(float x, float y, float speed, string name = "Actor", Shape shape) :
+            base(x, y, name, shape)
         {
             _speed = speed;
         }
@@ -38,13 +38,13 @@ namespace MathForGames
             int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A)) +
                 Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
             int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) +
-                Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S)); ;
+                Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
             Vector2 Movedirection = new Vector2(xDirection, yDirection);
 
-            GetVelocity = Movedirection.Normalized * _speed * deltaTime;
+            Velocity = Movedirection.Normalized * _speed * deltaTime;
 
-            LocalPosition += _velocity;
+            LocalPosition += Velocity;
 
             base.Update(deltaTime);
         }

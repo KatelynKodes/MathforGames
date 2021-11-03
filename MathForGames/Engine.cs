@@ -75,26 +75,36 @@ namespace MathForGames
             actor.Forward = new Vector2(700, 900);
 
             //Planets
-            Actor Sun = new Actor(100, 50, "Sun", "Images/Sun.png");
+            Actor Sun = new Actor(400, 170, "Sun", "Images/Sun.png");
             CircleCollider SunCollider = new CircleCollider(30, Sun);
             Sun.Collider = SunCollider;
-            Sun.SetScale(50, 50);
+            Sun.SetScale(100, 100);
 
-            Actor Planet1 = new Actor(200, 120, "Planet 1", "");
+            Actor Planet1 = new Actor(400, 60, "Planet 1", "Images/Planet.png");
             CircleCollider Planet1Collider = new CircleCollider(20, Planet1);
             Planet1.Collider = Planet1Collider;
+            Planet1.SetScale(50, 50);
 
-            Actor Planet2 = new Actor(23, 77, "Planet 2", "");
+            Actor Planet2 = new Actor(200, 150, "Planet 2", "Images/Planet.png");
             CircleCollider Planet2Collider = new CircleCollider(20, Planet2);
             Planet2.Collider = Planet2Collider;
+            Planet2.SetScale(50, 50);
 
-            Actor Planet3 = new Actor(90, 200, "Planet 3", "");
+            Actor Planet3 = new Actor(490, 200, "Planet 3", "Images/Planet.png");
             CircleCollider Planet3Collider = new CircleCollider(20, Planet3);
             Planet3.Collider = Planet3Collider;
+            Planet3.SetScale(50, 50);
 
-            Actor Planet4 = new Actor(40, 210, "Planet 4", "");
+            Actor Planet4 = new Actor(310, 250, "Planet 4", "Images/Planet.png");
             CircleCollider Planet4Collider = new CircleCollider(20, Planet4);
             Planet4.Collider = Planet4Collider;
+            Planet4.SetScale(50, 50);
+
+            //Adds children to sun
+            Sun.AddChild(Planet1);
+            Sun.AddChild(Planet2);
+            Sun.AddChild(Planet3);
+            Sun.AddChild(Planet4);
 
             //Adds actors to the scene;
             scene.AddActor(player);
@@ -116,6 +126,8 @@ namespace MathForGames
         private void Update(float deltaTime)
         {
             _scenes[_currentSceneIndex].Update(deltaTime);
+
+            
 
             while (Console.KeyAvailable)
             {

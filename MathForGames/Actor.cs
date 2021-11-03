@@ -38,14 +38,26 @@ namespace MathForGames
 
         public Vector2 WorldPosition
         {
-            get; 
-            set;
+            get { return new Vector2(_globalTransform.M02, _globalTransform.M12); }
+            set 
+            {
+                if (_parent != null)
+                {
+                    Vector2 NewLocal = new Vector2(value.X - _parent.LocalTransform.M02/_parent._scale.M00, 
+                                                   value.Y - _parent.LocalTransform.M12/_parent._scale.M11);
+                    LocalPosition = NewLocal;
+                }
+                else
+                {
+                    LocalPosition = value;
+                }
+            }
         }
 
         public Matrix3 LocalTransform
         {
-            get { return LocalTransform; }
-            private set { LocalTransform = value; }
+            get { return _localTransform; }
+            private set { _localTransform = value; }
         }
 
         public Matrix3 GlobalTransform
@@ -67,7 +79,13 @@ namespace MathForGames
 
         public Vector2 Size
         {
-            get { return new Vector2(_scale.M00, _scale.M11); }
+            get 
+            {
+                float xScale = new Vector2(_scale.M00, _scale.M10).Magnitude;
+                float yScale = new Vector2(_scale.M01, _scale.M11).Magnitude;
+
+                return new Vector2(xScale, yScale);
+            }
             set { SetScale(value.X, value.Y); }
         }
 
@@ -120,14 +138,14 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
-            _localTransform = _translate * _rotation * _scale;
+            UpdateTransforms();
         }
 
         public virtual void Draw()
         {
             if (_sprite != null)
             {
-                _sprite.Draw(_localTransform);
+                _sprite.Draw(GlobalTransform);
             }
         }
 
@@ -136,9 +154,21 @@ namespace MathForGames
 
         }
 
+        /// <summary>
+        /// Updates both the local and global transforms of the actor
+        /// </summary>
         public void UpdateTransforms()
         {
-            
+            _localTransform = _translate * _rotation * _scale;
+
+            if (Parent != null)
+            {
+                GlobalTransform = Parent._globalTransform * _localTransform;
+            }
+            else
+            {
+                GlobalTransform = LocalTransform;
+            }
         }
 
         //Adding and removing children
@@ -158,8 +188,9 @@ namespace MathForGames
 
             TempChildren[TempChildren.Length - 1] = childToAdd;
 
-            _children = TempChildren;
             childToAdd.Parent = this;
+
+            _children = TempChildren;
         }
 
         /// <summary>
@@ -168,18 +199,28 @@ namespace MathForGames
         /// <param name="childToRemove"></param>
         public void RemoveChild(Actor childToRemove)
         {
+            bool childRemoved = false;
             Actor[] TempChildren = new Actor[Children.Length - 1];
 
+            int j = 0;
             for (int i = 0; i < Children.Length; i++)
             {
                 if (Children[i] != childToRemove)
                 {
-                    TempChildren[i] = Children[i];
+                    TempChildren[j] = Children[i];
+                    j++;
+                }
+                else
+                {
+                    childRemoved = true;
                 }
             }
 
-            _children = TempChildren;
-            childToRemove.Parent = null;
+            if (childRemoved)
+            {
+                _children = TempChildren;
+                childToRemove.Parent = null;
+            }
         }
 
 

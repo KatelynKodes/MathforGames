@@ -23,7 +23,7 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Player(float x, float y, float speed, string name = "Actor", Shape shape) :
+        public Player(float x, float y, float speed, string name = "Actor", Shape shape = Shape.CUBE) :
             base(x, y, name, shape)
         {
             _speed = speed;
@@ -37,10 +37,10 @@ namespace MathForGames
         {
             int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A)) +
                 Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
-            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) +
+            int zDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) +
                 Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
-            Vector2 Movedirection = new Vector2(xDirection, yDirection);
+            Vector3 Movedirection = new Vector3(xDirection, 0, zDirection);
 
             Velocity = Movedirection.Normalized * _speed * deltaTime;
 

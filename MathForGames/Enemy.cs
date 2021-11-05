@@ -75,8 +75,9 @@ namespace MathForGames
         /// less than or equal to a specified distance</returns>
         public bool GetTargetInSight()
         {
-            Vector2 TargetDir = (_chasee.LocalPosition - LocalPosition).Normalized;
-            float DotProduct = Vector2.DotProduct(TargetDir, ForwardDir);
+            Vector3 TargetDir = (_chasee.LocalPosition - LocalPosition).Normalized;
+
+            float DotProduct = Vector3.DotProduct(TargetDir, ForwardDir);
             float Angle = MathF.Acos(DotProduct);
             float Distance = Vector2.Distance(LocalPosition, _chasee.LocalPosition);
             return Angle < _maxViewingAngle && Distance <= 150f;

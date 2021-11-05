@@ -13,12 +13,19 @@ namespace MathLibrary
 
         public float Magnitude
         {
-            get { return 0; }
+            get
+            {
+                return (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+            }
         }
 
         public Vector4 Normalized
         {
-            get { return new Vector4(); }
+            get 
+            {
+                Vector4 value = this;
+                return value.Normalize();
+            }
         }
 
         public Vector4(float x, float y, float z, float w)
@@ -29,14 +36,44 @@ namespace MathLibrary
             W = w;
         }
 
+        public static Vector4 operator +(Vector4 lhs, Vector4 rhs)
+        {
+            return new Vector4(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z, lhs.W + rhs.W);
+        }
+
+        public static Vector4 operator -(Vector4 lhs, Vector4 rhs)
+        {
+            return new Vector4(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z, lhs.W - rhs.W);
+        }
+
+        public static Vector4 operator *(Vector4 lhs, float scaler)
+        {
+            return new Vector4(lhs.X * scaler, lhs.Y * scaler, lhs.Z * scaler, lhs.W * scaler);
+        }
+
+        public static Vector4 operator /(Vector4 lhs, float scaler)
+        {
+            return new Vector4(lhs.X/scaler, lhs.Y/scaler, lhs.Z/scaler, lhs.W/scaler);
+        }
+
         public static float DotProduct(Vector4 lhs, Vector4 rhs)
         {
-            return;
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z) + (lhs.W * rhs.W);
         }
 
         public static float Distance(Vector4 lhs, Vector4 rhs)
         {
-            return;
+            return (lhs-rhs).Magnitude;
+        }
+
+        public Vector4 Normalize()
+        {
+            if (Magnitude == 0)
+            {
+                return new Vector4();
+            }
+
+            return this / Magnitude;
         }
     }
 }

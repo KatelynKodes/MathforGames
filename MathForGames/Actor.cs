@@ -38,8 +38,8 @@ namespace MathForGames
 
         public Vector3 LocalPosition
         {
-            get { return new Vector2(_translate.M02, _translate.M12); }
-            set{ SetTranslation(value.X, value.Y);}
+            get { return new Vector3(_translate.M03, _translate.M13, _translate.M23); }
+            set{ SetTranslation(value.X, value.Y, value.Z);}
         }
 
         public Vector3 WorldPosition
@@ -49,8 +49,9 @@ namespace MathForGames
             {
                 if (_parent != null)
                 {
-                    Vector2 NewLocal = new Vector2(value.X - _parent.LocalTransform.M02/_parent._scale.M00, 
-                                                   value.Y - _parent.LocalTransform.M12/_parent._scale.M11);
+                    Vector3 NewLocal = new Vector3(value.X - _parent.GlobalTransform.M02/_parent._scale.M00, 
+                                                   value.Y - _parent.GlobalTransform.M12/_parent._scale.M11,
+                                                   value.Z - _parent.GlobalTransform.M22/_parent._scale.M22);
                     LocalPosition = NewLocal;
                 }
                 else
@@ -308,7 +309,7 @@ namespace MathForGames
         /// Adds a rotation to the given transforms rotation
         /// </summary>
         /// <param name="radians">The angle in radians to turn.</param>
-        public void Rotate(float radians)
+        public void Rotate(float radianX, float radianY, float radianZ)
         {
             Matrix4 RotationX = Matrix4.CreateRotationX(radianX);
             Matrix4 RotationY = Matrix4.CreateRotationY(radianY);
@@ -322,28 +323,21 @@ namespace MathForGames
         /// Rotates actor to face the given position
         /// </summary>
         /// <param name="position"></param>
-        public void LookAt(Vector2 position)
+        public void LookAt(Vector3 position)
         {
-            /*Find the direction the actor should look in
-            Vector2 Direction = (position - LocalPosition).Normalized;
+            Vector3 direction = position - (WorldPosition).Normalized;
 
-            //Use dotproduct to find the angle the actor needs to rotate
-            float dotProd = Vector2.DotProduct(Direction, Forward);
-            float angle = (float)Math.Acos(dotProd);
-
-            //Find a perpendicular vector to the distance
-            Vector2 perpDirection = new Vector2(Direction.Y, -Direction.X);
-
-            //Find the dotProduct of the perpendicular vector and the current forward
-            float perpDot = Vector2.DotProduct(perpDirection, Forward);
-
-            //If the result isn't 0, change the sign of the angle to be either positive or negative
-            if (perpDot != 0)
+            if (direction.Magnitude == 0)
             {
-                angle *= -perpDot / Math.Abs(perpDot);
+                direction = new Vector3(0, 0, 1);
             }
 
-            Rotate(angle);*/
+            Vector3 AlignAxis = new Vector3(0, 1, 0);
+
+            Vector3 newYAxis = new Vector3(0, 1, 0);
+            Vector3 newXAxis = new Vector3(1, 0, 0);
+
+
         }
     }
 }

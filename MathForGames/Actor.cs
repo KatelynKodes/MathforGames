@@ -16,9 +16,9 @@ namespace MathForGames
     {
         private string _name;
         private bool _started;
-        private Sprite _sprite;
         private Collider _collider;
         private Shape _shape;
+        private Vector3 _forward = new Vector3(0,0,1);
 
         //transforms
         private Matrix4 _localTransform = Matrix4.Identity;

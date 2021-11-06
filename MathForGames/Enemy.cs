@@ -10,9 +10,8 @@ namespace MathForGames
     class Enemy : Actor
     {
         private float _speed;
-        private Vector2 _velocity;
+        private Vector3 _velocity;
         private Actor _chasee;
-        private Vector2 _forwardDir = new Vector2(1, 0);
         private float _maxViewingAngle;
 
         public float Speed
@@ -21,16 +20,10 @@ namespace MathForGames
             set { _speed = value; }
         }
 
-        public Vector2 Velocity
+        public Vector3 Velocity
         {
             get { return _velocity; }
             set { _velocity = value; }
-        }
-
-        public Vector2 ForwardDir
-        {
-            get { return _forwardDir; }
-            set { _forwardDir = value; }
         }
 
         public Enemy (float x, float y, float speed, string name, float MaxAngle, Actor Chasee, Shape shape) :
@@ -48,10 +41,10 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             //Finds the intended direction
-            Vector2 IntendedDirection = _chasee.LocalPosition - LocalPosition;
+            Vector3 MoveDirection = (_chasee.LocalPosition - LocalPosition).Normalized;
 
             //Normalizes the intended direction and multiplies it by speed and time
-            Velocity = IntendedDirection.Normalized * Speed * deltaTime;
+            Velocity = MoveDirection.Normalized * Speed * deltaTime;
 
             if (GetTargetInSight())
             {
@@ -77,9 +70,9 @@ namespace MathForGames
         {
             Vector3 TargetDir = (_chasee.LocalPosition - LocalPosition).Normalized;
 
-            float DotProduct = Vector3.DotProduct(TargetDir, ForwardDir);
+            float DotProduct = Vector3.DotProduct(TargetDir, Forward);
             float Angle = MathF.Acos(DotProduct);
-            float Distance = Vector2.Distance(LocalPosition, _chasee.LocalPosition);
+            float Distance = Vector3.Distance(_chasee.LocalPosition, LocalPosition);
             return Angle < _maxViewingAngle && Distance <= 150f;
         }
     }

@@ -127,9 +127,28 @@ namespace MathLibrary
                                m30, m31, m32, m33);
         }
 
-        public static Matrix4 CreateRotation(float radians)
+        public static Matrix4 CreateRotationX(float radians)
         {
-            return new Matrix4();
+            return new Matrix4(Identity.M00, Identity.M01, Identity.M02, Identity.M03,
+                               Identity.M10, (float)Math.Cos(radians), -(float)Math.Sin(radians), Identity.M13,
+                               Identity.M20, (float)Math.Sin(radians), (float)Math.Cos(radians), Identity.M23,
+                               Identity.M30, Identity.M31, Identity.M32, Identity.M33);
+        }
+
+        public static Matrix4 CreateRotationY(float radians)
+        {
+            return new Matrix4((float)Math.Cos(radians), Identity.M01, (float)Math.Sin(radians), Identity.M03,
+                                Identity.M10, Identity.M11, Identity.M12, Identity.M13,
+                                -(float)Math.Sin(radians), Identity.M21, (float)Math.Cos(radians), Identity.M23,
+                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
+        }
+
+        public static Matrix4 CreateRotationZ(float radians)
+        {
+            return new Matrix4((float)Math.Cos(radians), -(float)Math.Sin(radians), Identity.M02, Identity.M03,
+                               (float)Math.Sin(radians), (float)Math.Sin(radians), Identity.M12, Identity.M13,
+                               Identity.M20, Identity.M21, Identity.M22, Identity.M23,
+                               Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
         public static Matrix4 CreateTranslation(float x, float y, float z)
@@ -140,11 +159,19 @@ namespace MathLibrary
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
-        public static Matrix4 CreateScale(float x, float y, float z)
+        public static Matrix4 CreateTranslation(Vector3 Position)
         {
-            return new Matrix4(x, Identity.M01, Identity.M02, Identity.M03,
-                               Identity.M10, y, Identity.M12, Identity.M13,
-                               Identity.M20, Identity.M21, z, Identity.M23,
+            return new Matrix4(Identity.M00, Identity.M01, Identity.M02, Position.X,
+                               Identity.M10, Identity.M11, Identity.M12, Position.Y,
+                               Identity.M20, Identity.M21, Identity.M22, Position.Z,
+                               Identity.M30, Identity.M31, Identity.M32, Identity.M33);
+        }
+
+        public static Matrix4 CreateScale(Vector3 Scale)
+        {
+            return new Matrix4(Scale.X, Identity.M01, Identity.M02, Identity.M03,
+                               Identity.M10, Scale.Y, Identity.M12, Identity.M13,
+                               Identity.M20, Identity.M21, Scale.Z, Identity.M23,
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
     }

@@ -75,5 +75,16 @@ namespace MathLibrary
 
             return this / Magnitude;
         }
+
+        public static Vector4 CrossProduct(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector4
+            {
+                X = (lhs.Z * rhs.Y) - (lhs.Y * rhs.Z),
+                Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X),
+                W = 0
+            };
+        }
     }
 }

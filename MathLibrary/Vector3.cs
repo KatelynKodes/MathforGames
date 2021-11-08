@@ -124,5 +124,15 @@ namespace MathLibrary
             }
             return this / Magnitude;
         }
+
+        public static Vector3 CrossProduct(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector3
+            {
+                X = (lhs.Z * rhs.Y)-(lhs.Y * rhs.Z),
+                Y = (lhs.Z * rhs.X)-(lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y)-(lhs.Y * rhs.X)
+            };
+        }
     }
 }

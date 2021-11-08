@@ -67,6 +67,7 @@ namespace MathForGames
             AABBCollider PlayerAABB = new AABBCollider(50, 50, player);
             CircleCollider playerCircleCollider = new CircleCollider(2, player);
             player.Collider = PlayerAABB;
+            player.SetColor(new Vector4(140, 120, 50, 255));
             player.SetScale(1, 1, 1);
 
             //Adds actors to the scene;

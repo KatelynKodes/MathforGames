@@ -19,6 +19,7 @@ namespace MathForGames
         private Collider _collider;
         private Shape _shape;
         private Vector3 _forward = new Vector3(0,0,1);
+        private Color _color;
 
         //transforms
         private Matrix4 _localTransform = Matrix4.Identity;
@@ -59,6 +60,11 @@ namespace MathForGames
                     LocalPosition = value;
                 }
             }
+        }
+
+        public Color ShapeColor
+        {
+            get { return _color; }
         }
 
         public Matrix4 LocalTransform
@@ -135,7 +141,9 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            System.Numerics.Vector3 position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            System.Numerics.Vector3 startPos = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            System.Numerics.Vector3 endPos = new System.Numerics.Vector3(WorldPosition.X + Forward.X * 50, WorldPosition.X + Forward.Y * 50,
+                                                                         WorldPosition.Z + Forward.Z * 50);
             switch (_shape)
             {
                 case Shape.CUBE:
@@ -143,13 +151,15 @@ namespace MathForGames
                     float Sizey = new Vector3(GlobalTransform.M01, GlobalTransform.M11, GlobalTransform.M21).Magnitude;
                     float Sizez = new Vector3(GlobalTransform.M02, GlobalTransform.M12, GlobalTransform.M22).Magnitude;
 
-                    Raylib.DrawCube(position, Sizex, Sizey, Sizez, Color.RED);
+                    Raylib.DrawCube(startPos, Sizex, Sizey, Sizez, ShapeColor);
                     break;
                 case Shape.SPHERE:
                     Sizex = new Vector3(GlobalTransform.M00, GlobalTransform.M10, GlobalTransform.M20).Magnitude;
-                    Raylib.DrawSphere(position, Sizex, Color.BLUE);
+                    Raylib.DrawSphere(startPos, Sizex, ShapeColor);
                     break;
             }
+
+            Raylib.DrawLine3D(startPos, endPos, Color.GREEN);
         }
 
         public void End()
@@ -325,19 +335,62 @@ namespace MathForGames
         /// <param name="position"></param>
         public void LookAt(Vector3 position)
         {
+            //Get direction for the actor to look in
             Vector3 direction = position - (WorldPosition).Normalized;
 
+            //if direction has a length of 0...
             if (direction.Magnitude == 0)
             {
+                //...Set to be the default forward
                 direction = new Vector3(0, 0, 1);
             }
 
+            //Create a vector3 that points directly upwards
             Vector3 AlignAxis = new Vector3(0, 1, 0);
 
+            //The x and y axis vectors
             Vector3 newYAxis = new Vector3(0, 1, 0);
             Vector3 newXAxis = new Vector3(1, 0, 0);
 
+            //If the direction vector is parallel to the alignaxis vector
+            if (Math.Abs(direction.Y) > 0 && direction.X == 0 && direction.Z == 0)
+            {
+                //Set alignaxis to point to the right
+                AlignAxis = new Vector3(1, 0, 0);
 
+                //Get crossproduct of x and y axis vectors, then normalize
+                newYAxis = Vector3.CrossProduct(direction, AlignAxis); //use direction and alignaxis
+                newYAxis.Normalize();
+
+                newXAxis = Vector3.CrossProduct(newYAxis, direction); //use newYaxis and direction
+                newXAxis.Normalize();
+            }
+            //If the direction is not parallel...
+            else
+            {
+                //...Get crossproduct of the x and y axis then normalize
+                newXAxis = Vector3.CrossProduct(AlignAxis, direction); //use direction and alignaxis
+                newXAxis.Normalize();
+
+                newYAxis = Vector3.CrossProduct(direction, newXAxis); //use newXaxis and direction
+                newYAxis.Normalize();
+            }
+
+            //Create a new matrix with the new axis
+            _rotation = new Matrix4(newXAxis.X, newYAxis.X, direction.X, 0,
+                                    newXAxis.Y, newYAxis.Y, direction.Y, 0,
+                                    newXAxis.Z, newXAxis.Z, direction.Z, 0,
+                                    0, 0, 0, 1);
+        }
+
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        public void SetColor(Vector4 colorValue)
+        {
+            _color = new Color((int)colorValue.X, (int)colorValue.Y, (int)colorValue.Z, (int)colorValue.W);
         }
     }
 }

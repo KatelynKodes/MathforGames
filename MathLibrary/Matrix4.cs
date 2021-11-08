@@ -146,7 +146,7 @@ namespace MathLibrary
         public static Matrix4 CreateRotationZ(float radians)
         {
             return new Matrix4((float)Math.Cos(radians), -(float)Math.Sin(radians), Identity.M02, Identity.M03,
-                               (float)Math.Sin(radians), (float)Math.Sin(radians), Identity.M12, Identity.M13,
+                               (float)Math.Sin(radians), (float)Math.Cos(radians), Identity.M12, Identity.M13,
                                Identity.M20, Identity.M21, Identity.M22, Identity.M23,
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }

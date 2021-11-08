@@ -15,7 +15,7 @@ namespace MathLibrary
         {
             get
             {
-                return (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+                return (float)Math.Sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W));
             }
         }
 
@@ -46,14 +46,34 @@ namespace MathLibrary
             return new Vector4(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z, lhs.W - rhs.W);
         }
 
-        public static Vector4 operator *(Vector4 lhs, float scaler)
+        public static Vector4 operator *(Vector4 lhs, float rhs)
         {
-            return new Vector4(lhs.X * scaler, lhs.Y * scaler, lhs.Z * scaler, lhs.W * scaler);
+            return new Vector4(lhs.X * rhs, lhs.Y * rhs, lhs.Z * rhs, lhs.W * rhs);
         }
 
-        public static Vector4 operator /(Vector4 lhs, float scaler)
+        /// <summary>
+        /// Multiplication of a vector 4 and a float
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static Vector4 operator *(float lhs, Vector4 rhs)
         {
-            return new Vector4(lhs.X/scaler, lhs.Y/scaler, lhs.Z/scaler, lhs.W/scaler);
+            return new Vector4(lhs * rhs.X, lhs * rhs.Y, lhs * rhs.Z, lhs * rhs.W);
+        }
+
+        public static Vector4 operator *(Matrix4 lhs, Vector4 rhs)
+        {
+            float newX = (lhs.M00 * rhs.X) + (lhs.M01 * rhs.Y) + (lhs.M02 * rhs.Z);
+            float newY = (lhs.M10 * rhs.X) + (lhs.M11 * rhs.Y) + (lhs.M12 * rhs.Z);
+            float newZ = (lhs.M20 * rhs.X) + (lhs.M21 * rhs.Y) + (lhs.M22 * rhs.Z);
+
+            return new Vector4(newX, newY, newZ, Matrix4.Identity.M33);
+        }
+
+        public static Vector4 operator /(Vector4 lhs, float scalar)
+        {
+            return new Vector4(lhs.X/scalar, lhs.Y/scalar, lhs.Z/scalar, lhs.W/scalar);
         }
 
         public static float DotProduct(Vector4 lhs, Vector4 rhs)
@@ -73,14 +93,14 @@ namespace MathLibrary
                 return new Vector4();
             }
 
-            return this / Magnitude;
+            return this /= Magnitude;
         }
 
-        public static Vector4 CrossProduct(Vector3 lhs, Vector3 rhs)
+        public static Vector4 CrossProduct(Vector4 lhs, Vector4 rhs)
         {
             return new Vector4
             {
-                X = (lhs.Z * rhs.Y) - (lhs.Y * rhs.Z),
+                X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
                 Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
                 Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X),
                 W = 0

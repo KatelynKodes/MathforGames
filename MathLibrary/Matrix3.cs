@@ -108,7 +108,7 @@ namespace MathLibrary
         /// <param name="radians">The result of the rotation</param>
         public static Matrix3 CreateRotation(float radians)
         {
-            Matrix3 RotatedMatrix3 = new Matrix3((float)Math.Cos(radians), (float)-Math.Sin(radians), Identity.M02,
+            Matrix3 RotatedMatrix3 = new Matrix3((float)Math.Cos(radians), -(float)Math.Sin(radians), Identity.M02,
                                                  (float)Math.Sin(radians), (float)Math.Cos(radians), Identity.M12,
                                                  Identity.M20, Identity.M21, Identity.M22);
             return RotatedMatrix3;
@@ -123,6 +123,19 @@ namespace MathLibrary
         {
             Matrix3 TranslatedMatrix3 = new Matrix3(Identity.M00, Identity.M01, x,
                                                     Identity.M10, Identity.M11, y,
+                                                    Identity.M20, Identity.M21, Identity.M22);
+            return TranslatedMatrix3;
+        }
+
+        /// <summary>
+        /// Creates a translation with a vector 2
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public static Matrix3 CreateTranslation(Vector2 position)
+        {
+            Matrix3 TranslatedMatrix3 = new Matrix3(Identity.M00, Identity.M01, position.X,
+                                                    Identity.M10, Identity.M11, position.Y,
                                                     Identity.M20, Identity.M21, Identity.M22);
             return TranslatedMatrix3;
         }

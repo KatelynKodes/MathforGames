@@ -64,11 +64,12 @@ namespace MathLibrary
 
         public static Vector4 operator *(Matrix4 lhs, Vector4 rhs)
         {
-            float newX = (lhs.M00 * rhs.X) + (lhs.M01 * rhs.Y) + (lhs.M02 * rhs.Z);
-            float newY = (lhs.M10 * rhs.X) + (lhs.M11 * rhs.Y) + (lhs.M12 * rhs.Z);
-            float newZ = (lhs.M20 * rhs.X) + (lhs.M21 * rhs.Y) + (lhs.M22 * rhs.Z);
+            float newX = (lhs.M00 * rhs.X) + (lhs.M01 * rhs.Y) + (lhs.M02 * rhs.Z) + (lhs.M03 * rhs.W);
+            float newY = (lhs.M10 * rhs.X) + (lhs.M11 * rhs.Y) + (lhs.M12 * rhs.Z) + (lhs.M13 * rhs.W);
+            float newZ = (lhs.M20 * rhs.X) + (lhs.M21 * rhs.Y) + (lhs.M22 * rhs.Z) + (lhs.M23 * rhs.W);
+            float newW = (lhs.M30 * rhs.X) + (lhs.M31 * rhs.Y) + (lhs.M32 * rhs.Z) + (lhs.M33 * rhs.W);
 
-            return new Vector4(newX, newY, newZ, Matrix4.Identity.M33);
+            return new Vector4(newX, newY, newZ, newW);
         }
 
         public static Vector4 operator /(Vector4 lhs, float scalar)

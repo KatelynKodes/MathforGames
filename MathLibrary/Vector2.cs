@@ -4,9 +4,15 @@ namespace MathLibrary
 {
     public struct Vector2
     {
+        // Variables
         public float X;
         public float Y;
 
+        /// <summary>
+        /// Vetor2 Base constructor
+        /// </summary>
+        /// <param name="xValue"></param>
+        /// <param name="yValue"></param>
         public Vector2(float xValue, float yValue)
         {
             X = xValue;
@@ -14,7 +20,7 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Gets the length of the vector 
+        /// Returns the length of the vector by returning X * X + Y * Y
         /// </summary>
         public float Magnitude
         {
@@ -24,6 +30,10 @@ namespace MathLibrary
             }
         }
 
+        /// <summary>
+        /// Creates a new vector2 of this vector2, then makes that new Vector2 value
+        /// call the Normalize method and returns the Vector2 value of the Normalized method called.
+        /// </summary>
         public Vector2 Normalized
         {
             get
@@ -33,6 +43,10 @@ namespace MathLibrary
             }
         }
 
+        /// <summary>
+        /// Returns a float of the vector2's X values being multiplied together
+        /// and added to the Vector2's Y values being multiplied together.
+        /// </summary>
         /// <param name="lhs">The left hand side of the operation</param>
         /// <param name="rhs">THe right hand side of the operation</param>
         /// <returns>The dot product of the first vector on to the second</returns>
@@ -78,7 +92,12 @@ namespace MathLibrary
             return new Vector2 { X = lhs.X - rhs.X, Y = lhs.Y - rhs.Y };
         }
 
-        //Multiplication with a scaler
+        /// <summary>
+        /// Multiplication with a scaler
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="scaler"></param>
+        /// <returns> A new vector with multiplied variables </returns>
         public static Vector2 operator *(Vector2 vector, float scaler)
         {
             // Multiplies the x and y values of a given vector by a scaler
@@ -86,7 +105,12 @@ namespace MathLibrary
             return new Vector2 { X = vector.X * scaler, Y = vector.Y * scaler };
         }
 
-        //Division with a scaler
+        /// <summary>
+        /// Division with a scaler
+        /// </summary>
+        /// <param name="vector"> The vector being divided </param>
+        /// <param name="scaler"> The scaler the vector is being divided by</param>
+        /// <returns> A new vector with divided variables </returns>
         public static Vector2 operator /(Vector2 vector, float scaler)
         {
             //Divides the x and y values of a given vector by a scaler

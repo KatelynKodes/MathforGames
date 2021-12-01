@@ -8,6 +8,10 @@ namespace MathLibrary
     {
         public float M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33;
 
+        /// <summary>
+        /// Returns a Matrix3 with the M00, M11, M22, and M33 values set to 1
+        /// and the other values set to 0
+        /// </summary>
         public static Matrix4 Identity
         {
             get
@@ -19,6 +23,13 @@ namespace MathLibrary
             }
         }
 
+        /// <summary>
+        /// Base constructor of the Matrix4
+        /// </summary>
+        /// <param name="m00"> x-Xvalue </param> <param name="m01"> x-Yvalue </param> <param name="m02"> x-Zvalue </param> <param name="m03"> x-Wvalue </param>
+        /// <param name="m10"> y-Xvalue </param> <param name="m11"> y-Yvalue </param> <param name="m12"> y-Zvalue </param> <param name="m13"> y-Wvalue </param>
+        /// <param name="m20"> z-Xvalue </param> <param name="m21"> z-Yvalue </param> <param name="m22"> z-Zvalue</param> <param name="m23"> z-Wvalue </param>
+        /// <param name="m30"> w-Xvalue </param> <param name="m31"> w-Yvalue </param> <param name="m32"> w-Zvalue</param> <param name="m33"> w-Wvalue </param>
         public Matrix4(float m00, float m01, float m02, float m03,
                        float m10, float m11, float m12, float m13,
                        float m20, float m21, float m22, float m23,
@@ -30,6 +41,12 @@ namespace MathLibrary
             M30 = m30; M31 = m31; M32 = m32; M33 = m33;
         }
 
+        /// <summary>
+        /// Returns a new Matrix4 that contains values of one Matrix4 added to another
+        /// </summary>
+        /// <param name="lhs"> The left hand side of the equation </param>
+        /// <param name="rhs"> The right hand side of the equation </param>
+        /// <returns></returns>
         public static Matrix4 operator +(Matrix4 lhs, Matrix4 rhs)
         {
             //Row 1
@@ -62,6 +79,12 @@ namespace MathLibrary
                                _m30, _m31, _m32, _m33);
         }
 
+        /// <summary>
+        /// Returns a new Matrix4 that contains values of one Matrix4 subtracted from another
+        /// </summary>
+        /// <param name="lhs"> The left hand side of the equation </param>
+        /// <param name="rhs"> The right hand side of the equation </param>
+        /// <returns></returns>
         public static Matrix4 operator -(Matrix4 lhs, Matrix4 rhs)
         {
             //Row 1
@@ -94,6 +117,13 @@ namespace MathLibrary
                                _m30, _m31, _m32, _m33);
         }
 
+        /// <summary>
+        /// An operator overload that returns a new Matrix4 after multiplying one matrix4 to the other
+        /// containing the multiplied values. 
+        /// </summary>
+        /// <param name="lhs"> The left hand side of the equation </param>
+        /// <param name="rhs"> The right hand side of the equation </param>
+        /// <returns></returns>
         public static Matrix4 operator *(Matrix4 lhs, Matrix4 rhs)
         {
             //Row 1
@@ -126,6 +156,11 @@ namespace MathLibrary
                                m30, m31, m32, m33);
         }
 
+        /// <summary>
+        /// Creates a new matrix that has been rotated in regards to the X-Axis 
+        /// by the given value in radians
+        /// </summary>
+        /// <param name="radians">The result of the rotation</param>
         public static Matrix4 CreateRotationX(float radians)
         {
             return new Matrix4(Identity.M00, Identity.M01, Identity.M02, Identity.M03,
@@ -134,6 +169,11 @@ namespace MathLibrary
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
+        /// <summary>
+        /// Creates a new matrix that has been rotated in regards to the Y-Axis 
+        /// by the given value in radians
+        /// </summary>
+        /// <param name="radians">The result of the rotation</param>
         public static Matrix4 CreateRotationY(float radians)
         {
             return new Matrix4((float)Math.Cos(radians), Identity.M01, (float)Math.Sin(radians), Identity.M03,
@@ -142,6 +182,11 @@ namespace MathLibrary
                                 Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
+        /// <summary>
+        /// Creates a new matrix that has been rotated in regards to the Z-Axis 
+        /// by the given value in radians
+        /// </summary>
+        /// <param name="radians">The result of the rotation</param>
         public static Matrix4 CreateRotationZ(float radians)
         {
             return new Matrix4((float)Math.Cos(radians), -(float)Math.Sin(radians), Identity.M02, Identity.M03,
@@ -150,6 +195,13 @@ namespace MathLibrary
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
+        /// <summary>
+        /// Creates a new matrix that has been translated by the given value
+        /// </summary>
+        /// <param name="x">The x position of the new matrix</param>
+        /// <param name="y">The y position of the new matrix</param>
+        /// <param name="z">The z position of the new matrix</param>
+        /// <returns></returns>
         public static Matrix4 CreateTranslation(float x, float y, float z)
         {
             return new Matrix4(Identity.M00, Identity.M01, Identity.M02, x,
@@ -158,6 +210,11 @@ namespace MathLibrary
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
+        /// <summary>
+        /// Creates a translation with a vector 3
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public static Matrix4 CreateTranslation(Vector3 Position)
         {
             return new Matrix4(Identity.M00, Identity.M01, Identity.M02, Position.X,
@@ -166,6 +223,11 @@ namespace MathLibrary
                                Identity.M30, Identity.M31, Identity.M32, Identity.M33);
         }
 
+        /// <summary>
+        /// Creates a new matrix that has been scaled by the given value
+        /// </summary>
+        /// <param name="Scale">The vector3 used to scale the matrix</param>
+        /// <returns>The result of the scale</returns>
         public static Matrix4 CreateScale(Vector3 Scale)
         {
             return new Matrix4(Scale.X, Identity.M01, Identity.M02, Identity.M03,

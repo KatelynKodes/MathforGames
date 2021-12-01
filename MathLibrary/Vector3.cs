@@ -8,6 +8,12 @@ namespace MathLibrary
         public float Y;
         public float Z;
 
+        /// <summary>
+        /// Vetor3 Base constructor
+        /// </summary>
+        /// <param name="xvalue"></param>
+        /// <param name="yvalue"></param>
+        /// <param name="zvalue"></param>
         public Vector3(float xvalue, float yvalue, float zvalue)
         {
             X = xvalue;
@@ -15,6 +21,9 @@ namespace MathLibrary
             Z = zvalue;
         }
 
+        /// <summary>
+        /// Returns the length of the vector by returning X * X + Y * Y + Z * Z
+        /// </summary>
         public float Magnitude
         {
             get
@@ -23,6 +32,10 @@ namespace MathLibrary
             }
         }
 
+        /// <summary>
+        /// Creates a new vector3 of this vector3, then makes that new Vector2 value
+        /// call the Normalize method and returns the Vector3 value of the Normalized method called.
+        /// </summary>
         public Vector3 Normalized
         {
             get
@@ -32,6 +45,14 @@ namespace MathLibrary
             }
         }
 
+        /// <summary>
+        /// Returns a float of the vector3's X values being multiplied together
+        /// and added to the Vector3's Y values being multiplied together.
+        /// then being added to the two vector3's Z values being multiplied together
+        /// </summary>
+        /// <param name="lhs">The left hand side of the operation</param>
+        /// <param name="rhs">THe right hand side of the operation</param>
+        /// <returns>The dot product of the first vector on to the second</returns>
         public static float DotProduct(Vector3 lhs, Vector3 rhs)
         {
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
@@ -96,7 +117,7 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// Multiplication of a matrix3 and a vector
+        /// Multiplication of a matrix3 and a vector3
         /// </summary>
         /// <param name="lhs"> The matrix3 </param>
         /// <param name="rhs"> The Vector3 </param>
@@ -121,6 +142,12 @@ namespace MathLibrary
             return new Vector3(lhs.X / scaler, lhs.Y / scaler, lhs.Z / scaler);
         }
 
+        /// <summary>
+        /// Checks if two vector3's are exactly the same
+        /// </summary>
+        /// <param name="lhs">The lefthand side of the equation</param>
+        /// <param name="rhs">The righthand side of the equation</param>
+        /// <returns>True if all three values are the same </returns>
         public static bool operator ==(Vector3 lhs, Vector3 rhs)
         {
             if (lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z)
@@ -131,6 +158,12 @@ namespace MathLibrary
             return false;
         }
 
+        /// <summary>
+        /// Checks if two vector3's are not equal to each other
+        /// </summary>
+        /// <param name="lhs">The lefthand side of the equation</param>
+        /// <param name="rhs">The righthand side of the equation</param>
+        /// <returns> True if one variable in one Vector3 is not equal to the same variable in the other Vector3</returns>
         public static bool operator !=(Vector3 lhs, Vector3 rhs)
         {
             if (lhs.X != rhs.X || lhs.Y != rhs.Y || lhs.Z != rhs.Z)
@@ -141,6 +174,10 @@ namespace MathLibrary
             return false;
         }
 
+        /// <summary>
+        /// Returns a vector2 containg an instance of a vector divided by the magnitude
+        /// </summary>
+        /// <returns> The result of the normalization. Returns an empty vector2 if the magnitude is zero</returns>
         public Vector3 Normalize()
         {
             if (Magnitude == 0)
@@ -150,6 +187,13 @@ namespace MathLibrary
             return this /= Magnitude;
         }
 
+        /// <summary>
+        /// Returns a new vector3 with the three values being equal to the result of the addition of the multiplication
+        /// of the two remaining values with the negative result of that multiplication
+        /// </summary>
+        /// <param name="lhs"> The lefthand side of the equation </param>
+        /// <param name="rhs"> The righthand side of the equation </param>
+        /// <returns> A new Vector3 </returns>
         public static Vector3 CrossProduct(Vector3 lhs, Vector3 rhs)
         {
             return new Vector3
